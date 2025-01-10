@@ -1,8 +1,4 @@
 FROM alpine:3.14
-
-FROM mongo:6.0.8-ubuntu2204
-RUN mongod
-
 FROM python:3.12.8-alpine3.21
 WORKDIR /opt/app/
 
