@@ -1,4 +1,4 @@
-import parameters
+import settings
 import mongoengine
 from models import Users
 
@@ -10,17 +10,17 @@ class MongoPort:
 
     @staticmethod
     def connect():
-        users_conn = mongoengine.connect(host=parameters.MONGODB_USERS_HOST, username=parameters.MONGODB_USERS_USER,
-                                         password=parameters.MONGODB_USERS_PASSWORD,
-                                         db=parameters.MONGODB_USERS_DATABASE)
-        return users_conn.get_database(parameters.MONGODB_USERS_DATABASE)
+        users_conn = mongoengine.connect(host=settings.MONGODB_USERS_HOST, username=settings.MONGODB_USERS_USER,
+                                         password=settings.MONGODB_USERS_PASSWORD,
+                                         db=settings.MONGODB_USERS_DATABASE)
+        return users_conn.get_database(settings.MONGODB_USERS_DATABASE)
 
     def find_all(self):
-        collection = self.db.get_collection(parameters.MONGODB_USERS_COLLECTION)
+        collection = self.db.get_collection(settings.MONGODB_USERS_COLLECTION)
         return collection.find({})
 
     def find(self, query):
-        collection = self.db.get_collection(parameters.MONGODB_USERS_COLLECTION)
+        collection = self.db.get_collection(settings.MONGODB_USERS_COLLECTION)
         return collection.find(query)
 
     @staticmethod
