@@ -1,25 +1,37 @@
-from pymongo.mongo_client import MongoClient
-from pymongo.server_api import ServerApi
 import parameters
+import mongoengine
+from models import Users
 
 
-class ForStoringUsers:
-    """Naming conventions:
-    https://dev.to/xoubaman/understanding-hexagonal-architecture-3gk
-    """
+class MongoPort:
 
     def __init__(self):
-        self.uri = parameters.MONGODB_USERS_URI
-        self.client = MongoClient(self.uri, server_api=ServerApi('1'))
+        self.db = self.connect()
 
-    def test_connection(self):
-        """
-        Send a ping to confirm a successful connection
-        """
+    @staticmethod
+    def connect():
+        users_conn = mongoengine.connect(host=parameters.MONGODB_USERS_HOST, username=parameters.MONGODB_USERS_USER,
+                                         password=parameters.MONGODB_USERS_PASSWORD,
+                                         db=parameters.MONGODB_USERS_DATABASE)
+        return users_conn.get_database(parameters.MONGODB_USERS_DATABASE)
 
-        try:
-            self.client.admin.command('ping')
-            print("Pinged your deployment. You successfully connected to MongoDB!")
-        except Exception as e:
-            print(e)
+    def find_all(self):
+        collection = self.db.get_collection(parameters.MONGODB_USERS_COLLECTION)
+        return collection.find({})
+
+    def find(self, query):
+        collection = self.db.get_collection(parameters.MONGODB_USERS_COLLECTION)
+        return collection.find(query)
+
+    @staticmethod
+    def upsert_one(user_data):
+        Users.objects(phone_number=user_data.phone_number).upsert_one(phone_number=user_data.phone_number,
+                                                                      first_name=user_data.first_name,
+                                                                      last_name=user_data.last_name,
+                                                                      ads_enabled=user_data.ads_enabled,
+                                                                      is_active=user_data.is_active)
+
+    @staticmethod
+    def delete_one(phone_number):
+        Users.objects(phone_number=phone_number).delete()
 
