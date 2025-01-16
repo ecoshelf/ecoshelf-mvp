@@ -2,9 +2,27 @@ from fastapi import FastAPI, Path
 from mongo_db_atlas_adaptor import MongoAdaptor
 from helpers import convert_mongo_results_to_dict
 from models import Users
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 mongo = MongoAdaptor()
+
+origins = [
+    "http://localhost",
+    "http://localhost:8000",
+    "http://0.0.0.0",
+    "http://0.0.0.0:8000",
+    "http://127.0.0.1",
+    "http://127.0.0.1:8000"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/users", status_code=200)
 def get_users():
