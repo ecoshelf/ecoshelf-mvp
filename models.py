@@ -7,7 +7,7 @@ class Users(mongo.Document):
     first_name = mongo.StringField()
     last_name = mongo.StringField()
     ads_enabled = mongo.BooleanField(default=True)
-    is_active = mongo.BooleanField(required=True)
-    updated_at = mongo.DateTimeField(required=True, default=datetime.now())
+    is_active = mongo.BooleanField(default=True)
+    updated_at = mongo.DateTimeField(default=datetime.now())
 
 
