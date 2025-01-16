@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Path, Query
 from mongo_db_atlas_adaptor import MongoAdaptor
 from helpers import convert_mongo_results_to_dict
+from bson import ObjectId
 
 app = FastAPI()
 mongo = MongoAdaptor()
@@ -26,7 +27,7 @@ def create_user(user: dict):
         return {"error": str(e)}
 
 
-from bson import ObjectId
+
 
 @app.patch("/users/{user_id}/is_active/")
 def update_is_active(
