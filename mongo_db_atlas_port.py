@@ -24,14 +24,14 @@ class MongoPort:
         return collection.find(query, {'_id': False})
 
     @staticmethod
-    def upsert_one(user_data):
-        Users.objects(phone_number=user_data.phone_number).upsert_one(phone_number=user_data.phone_number,
-                                                                      first_name=user_data.first_name,
-                                                                      last_name=user_data.last_name,
-                                                                      ads_enabled=user_data.ads_enabled,
-                                                                      is_active=user_data.is_active)
+    def upsert_one(user_object):
+        Users.objects(phone_number=user_object.phone_number).upsert_one(phone_number=user_object.phone_number,
+                                                                        first_name=user_object.first_name,
+                                                                        last_name=user_object.last_name,
+                                                                        ads_enabled=user_object.ads_enabled,
+                                                                        is_active=user_object.is_active,
+                                                                        updated_at=user_object.updated_at)
 
     @staticmethod
     def delete_one(phone_number):
         Users.objects(phone_number=phone_number).delete()
-
