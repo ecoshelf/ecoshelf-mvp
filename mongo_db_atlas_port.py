@@ -24,12 +24,12 @@ class MongoPort:
 
     @staticmethod
     def upsert_one(user_object):
-        Users.objects(phone_number=user_object.phone_number).upsert_one(phone_number=user_object.phone_number,
-                                                                        first_name=user_object.first_name,
-                                                                        last_name=user_object.last_name,
-                                                                        ads_enabled=user_object.ads_enabled,
-                                                                        is_active=user_object.is_active,
-                                                                        updated_at=user_object.updated_at)
+        return Users.objects(phone_number=user_object.phone_number).upsert_one(phone_number=user_object.phone_number,
+                                                                               first_name=user_object.first_name,
+                                                                               last_name=user_object.last_name,
+                                                                               ads_enabled=user_object.ads_enabled,
+                                                                               is_active=user_object.is_active,
+                                                                               updated_at=user_object.updated_at)
 
     @staticmethod
     def delete_one(phone_number):

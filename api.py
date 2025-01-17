@@ -46,8 +46,8 @@ def create_user(user: dict):
                         is_active=user.get('is_active'),
                         updated_at=user.get('updated_at')
                         )
-        mongo.upsert_one(user_obj)
-        return {"message": "Usuário criado com sucesso"}
+        results = mongo.upsert_one(user_obj)
+        return {str(results.id)}
     except Exception as e:
         return {"error": str(e)}
 
