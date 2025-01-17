@@ -17,7 +17,7 @@ class MongoPort:
 
     def find_all(self):
         collection = self.db.get_collection(settings.MONGODB_USERS_COLLECTION)
-        return collection.find({}, {'_id': False})
+        return list(collection.find({}, {'_id': False}))
 
     def find(self, query):
         collection = self.db.get_collection(settings.MONGODB_USERS_COLLECTION)
