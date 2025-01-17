@@ -63,7 +63,13 @@ def update_user(user: dict):
         mongo.upsert_one(user_obj)
 
 @app.delete("/users/phone_number/{phone_number}", status_code=200)
-def delete_user_by_phone_number(phone_number: str = Path(description="Insira o número de whatsapp do usuário")):
+def delete_user_by_phone_number(phone_number: str = Path(description="Phone Number")):
     """delete user by phone number"""
-    results = mongo.delete_one(phone_number)
+    results = mongo.delete_one_by_phone_number(phone_number)
     return convert_mongo_results_to_dict(results)
+
+@app.delete("/users/{id}", status_code=200)
+def delete_user_by_object_id(id: str = Path(description="Mongo Object ID as string")):
+    """delete user by object ID"""
+    results = mongo.delete_one_by_object_id(id)
+    return {'id': results}

@@ -1,3 +1,5 @@
+from bson import ObjectId
+
 import settings
 import mongoengine
 from models import Users
@@ -32,5 +34,11 @@ class MongoPort:
                                                                                updated_at=user_object.updated_at)
 
     @staticmethod
-    def delete_one(phone_number):
+    def delete_one_by_phone_number(phone_number):
         Users.objects(phone_number=phone_number).delete()
+
+    @staticmethod
+    def delete_one_by_object_id(id):
+        object_id = ObjectId(id)
+        Users.objects(id=object_id).delete()
+        return id
