@@ -20,7 +20,7 @@ app.add_middleware(
 @app.get("/users", status_code=200)
 def get_users(response: Response):
     results = mongo.find_all()
-    results_len = len(list(results))
+    results_len = len([results].copy())
     response.headers['X-Total-Count'] = str(results_len)
     response.headers['Access-Control-Expose-Headers'] = 'Content-Range'
     response.headers["Content-Range"] = "bytes: 0-9/*"
