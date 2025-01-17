@@ -1,3 +1,4 @@
+from bson import ObjectId
 from fastapi import FastAPI, Path, Response
 from mongo_db_atlas_adaptor import MongoAdaptor
 from helpers import convert_mongo_results_to_dict
@@ -39,6 +40,17 @@ def get_user_by_phone_number(response: Response, phone_number: str = Path(descri
     response.headers['Access-Control-Expose-Headers'] = 'Content-Range'
     response.headers["Content-Range"] = "bytes: 0-9/*"
     return convert_mongo_results_to_dict(results)
+
+@app.get("/users/{id}", status_code=200)
+def get_user_by_object_id(response: Response, id: str = Path(description="User ID")):
+    """get user by id"""
+    results = mongo.find({'_id': ObjectId(id)})
+    results_len = len([results].copy())
+    response.headers['X-Total-Count'] = str(results_len)
+    response.headers['Access-Control-Expose-Headers'] = 'Content-Range'
+    response.headers["Content-Range"] = "bytes: 0-9/*"
+    return convert_mongo_results_to_dict(results)
+
 
 @app.post("/users", status_code=201)
 def create_user(user: dict):
