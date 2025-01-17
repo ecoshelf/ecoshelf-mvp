@@ -24,18 +24,7 @@ def get_users(response: Response):
     response.headers['X-Total-Count'] = str(results_len)
     response.headers['Access-Control-Expose-Headers'] = 'Content-Range'
     response.headers["Content-Range"] = "bytes: 0-9/*"
-    return [
-    {
-        "id": "1",
-        "title": "Hello world",
-        "body": "Hello world"
-    },
-    {
-        "id": "2",
-        "title": "Hello world",
-        "body": "Hello world"
-    }
-]
+    return convert_mongo_results_to_dict(results)
 
 @app.get("/users/phone_number/{phone_number}", status_code=200)
 def get_user_by_phone_number(

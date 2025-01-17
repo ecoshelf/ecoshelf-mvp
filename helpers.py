@@ -1,10 +1,15 @@
-from bson import json_util
-import json
-
 def convert_mongo_results_to_dict(results):
+
     results_list = []
     if results:
         for result in results:
-            results_list.append(json.loads(json_util.dumps(result)))
+            result_dict = {}
+            id = result['_id']
+            result_dict.update({'id': str(id)})
+
+            for key, value in result.items():
+                if key != '_id':
+                    result_dict.update({key: value})
+            results_list.append(result_dict)
         return results_list
     return None
