@@ -47,7 +47,7 @@ def create_user(user: dict):
                         updated_at=user.get('updated_at')
                         )
         results = mongo.upsert_one(user_obj)
-        return {str(results.id)}
+        return {'id': str(results.id)}
     except Exception as e:
         return {"error": str(e)}
 
