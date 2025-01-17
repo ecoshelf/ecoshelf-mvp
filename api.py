@@ -31,9 +31,13 @@ def get_all_users(response: Response):
     return convert_mongo_results_to_dict(results)
 
 @app.get("/users/phone_number/{phone_number}", status_code=200)
-def get_user_by_phone_number(phone_number: str = Path(description="Insira o número de whatsapp do usuário")):
+def get_user_by_phone_number(response: Response, phone_number: str = Path(description="Insira o número de whatsapp do usuário")):
     """get user by phone number"""
     results = mongo.find({'phone_number': phone_number})
+    results_len = len([results].copy())
+    response.headers['X-Total-Count'] = str(results_len)
+    response.headers['Access-Control-Expose-Headers'] = 'Content-Range'
+    response.headers["Content-Range"] = "bytes: 0-9/*"
     return convert_mongo_results_to_dict(results)
 
 @app.post("/users", status_code=201)
