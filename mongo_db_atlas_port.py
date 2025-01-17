@@ -20,7 +20,7 @@ class MongoPort:
 
     def find(self, query):
         collection = self.db.get_collection(settings.MONGODB_USERS_COLLECTION)
-        return collection.find(query, {'_id': False})
+        return collection.find(query)
 
     @staticmethod
     def upsert_one(user_object):
