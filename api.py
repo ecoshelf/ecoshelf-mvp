@@ -49,7 +49,7 @@ def get_user_by_object_id(response: Response, id: str = Path(description="User I
     response.headers['X-Total-Count'] = str(results_len)
     response.headers['Access-Control-Expose-Headers'] = 'Content-Range'
     response.headers["Content-Range"] = "bytes: 0-9/*"
-    return convert_mongo_results_to_dict(results)
+    return {'id': id}
 
 
 @app.post("/users", status_code=201)
