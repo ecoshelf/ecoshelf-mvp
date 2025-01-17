@@ -2,7 +2,6 @@ import settings
 import mongoengine
 from models import Users
 
-
 class MongoPort:
 
     def __init__(self):
@@ -17,7 +16,7 @@ class MongoPort:
 
     def find_all(self):
         collection = self.db.get_collection(settings.MONGODB_USERS_COLLECTION)
-        return list(collection.find({}, {'_id': False}))
+        return collection.find({})
 
     def find(self, query):
         collection = self.db.get_collection(settings.MONGODB_USERS_COLLECTION)
