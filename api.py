@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Path
+from fastapi import FastAPI, Path, Response
 from mongo_db_atlas_adaptor import MongoAdaptor
 from helpers import convert_mongo_results_to_dict
 from models import Users
@@ -18,8 +18,12 @@ app.add_middleware(
 )
 
 @app.get("/users", status_code=200)
-def get_users():
+def get_users(response: Response):
     results = mongo.find_all()
+    results_len = len(list(results))
+    response.headers['X-Total-Count'] = str(results_len)
+    response.headers['Access-Control-Expose-Headers'] = 'Content-Range'
+    response.headers["Content-Range"] = "bytes: 0-9/*"
     return convert_mongo_results_to_dict(results)
 
 @app.get("/users/phone_number/{phone_number}", status_code=200)
