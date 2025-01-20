@@ -67,7 +67,7 @@ def create_user(user: dict):
     except Exception as e:
         return {"error": str(e)}
 
-@app.put("/users", status_code=201)
+@app.put("/users/{id}", status_code=200)
 def update_user(user: dict):
         user_obj = Users(phone_number=user.get('phone_number'),
                         first_name=user.get('first_name'),
@@ -76,7 +76,9 @@ def update_user(user: dict):
                         is_active=user.get('is_active'),
                         updated_at=user.get('updated_at')
                         )
-        mongo.upsert_one(user_obj)
+        results = mongo.upsert_one(user_obj)
+        return {'id': str(results.id)}
+        
 
 @app.delete("/users/phone_number/{phone_number}", status_code=200)
 def delete_user_by_phone_number(phone_number: str = Path(description="Phone Number")):
