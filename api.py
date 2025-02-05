@@ -4,9 +4,13 @@ from mongo_db_atlas_adaptor import MongoAdaptor
 from helpers import convert_mongo_results_to_dict
 from models import Users
 from fastapi.middleware.cors import CORSMiddleware
+from mangum import Mangum
 
 # Para executar:
 # uvicorn api:app --reload
+
+# Serviço disponível em:
+# https://i5ujqdu2eokjdwvlrzztnvss5y0zcilo.lambda-url.us-east-1.on.aws/docs
 
 app = FastAPI()
 mongo = MongoAdaptor()
@@ -91,3 +95,5 @@ def delete_user_by_object_id(id: str = Path(description="Mongo Object ID as stri
     """delete user by object ID"""
     results = mongo.delete_one_by_object_id(id)
     return {'id': results}
+
+handler = Mangum(app)
