@@ -33,7 +33,12 @@ def get_all_users(response: Response):
     response.headers['X-Total-Count'] = str(results_len)
     response.headers['Access-Control-Expose-Headers'] = 'Content-Range'
     response.headers["Content-Range"] = "bytes: 0-9/*"
-    return convert_mongo_results_to_dict(results)
+    results_dict = convert_mongo_results_to_dict(results)
+    if results_dict:
+        return results_dict
+    else:
+        raise HTTPException(status_code=404, detail="Not found")
+
 
 @app.get("/users/phone_number/{phone_number}", status_code=200)
 def get_user_by_phone_number(response: Response, phone_number: str = Path(description="Insira o número de whatsapp do usuário")):
@@ -47,7 +52,7 @@ def get_user_by_phone_number(response: Response, phone_number: str = Path(descri
     if results_dict:
         return results_dict
     else:
-        raise HTTPException(status_code=404, detail="Phone number not found")
+        raise HTTPException(status_code=404, detail="Not found")
 
 @app.get("/users/{id}", status_code=200)
 def get_user_by_object_id(response: Response, id: str = Path(description="User ID")):
