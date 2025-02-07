@@ -65,13 +65,23 @@ def test_get_all_users_should_list_users(mongo_find_all_user_results):
 
 def test_get_user_by_phone_number_should_return_status_code_200():
     # GIVEN
-    phone_number = '000000000000'
+    phone_number = '00000000000000'
 
     # WHEN
     response = client.get(f"/users/phone_number/{phone_number}")
 
     # THEN
     assert response.status_code == 200
+
+def test_get_user_by_phone_number_should_return_status_code_404():
+    # GIVEN
+    phone_number = '123912831'
+
+    # WHEN
+    response = client.get(f"/users/phone_number/{phone_number}")
+
+    # THEN
+    assert response.status_code == 404
 
 def test_get_user_by_object_id_should_return_status_code_200():
     # GIVEN
