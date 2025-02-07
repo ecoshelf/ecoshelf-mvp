@@ -1,5 +1,5 @@
 from bson import ObjectId
-from fastapi import FastAPI, Path, Response
+from fastapi import FastAPI, Path, Response, HTTPException
 from mongo_db_atlas_adaptor import MongoAdaptor
 from helpers import convert_mongo_results_to_dict
 from models import Users
@@ -43,7 +43,11 @@ def get_user_by_phone_number(response: Response, phone_number: str = Path(descri
     response.headers['X-Total-Count'] = str(results_len)
     response.headers['Access-Control-Expose-Headers'] = 'Content-Range'
     response.headers["Content-Range"] = "bytes: 0-9/*"
-    return convert_mongo_results_to_dict(results)
+    results_dict = convert_mongo_results_to_dict(results)
+    if results_dict:
+        return results_dict
+    else:
+        raise HTTPException(status_code=404, detail="Phone number not found")
 
 @app.get("/users/{id}", status_code=200)
 def get_user_by_object_id(response: Response, id: str = Path(description="User ID")):
